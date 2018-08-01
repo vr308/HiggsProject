@@ -1,0 +1,82 @@
+\documentclass[a4paper,twoside]{article}
+\usepackage[a4paper, margin=25mm]{geometry}
+\setlength\parindent{0pt}
+\usepackage{bookmark}
+\usepackage{array,booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\title{Code Guidance}
+\author{\small Vidhi Lalchand}
+\date{\small Thesis title: A meta-algorithm for classifications using random recursive tree ensembles: A high energy physics application}
+\begin{document}
+\maketitle
+This document summarizes the workings of the python code base submitted along with the thesis mentioned in the title.
+This is not a README file (a separate README file has been provided with the code). This document is written with the sole purpose of enhancing the usability of the code in addition to reproducibility of the main results published in the thesis. This code base is designed to run on the dataset publicly available to download from the CERN Open data portal at \url{http://opendata.cern.ch/record/328?ln=en}. The size of the unzipped data file is 195 MB.\\
+The code base allows a user to run several tree ensemble classifiers and examine the results. The code base comes with a \texttt{settings.ini} file in the parent folder which is the only file a user needs to amend in order to run the code in different configurations.  The \texttt{settings.ini} file is read by a config parser when \texttt{$\_\_$main$\_\_$.py}
+is called. The \texttt{settings.ini} file is divided into different sections and has extensive comments to guide the user with parameter setting. Here, I just mention some important points. 
+
+\begin{enumerate}
+\item \textbf{paths}: The user must amend this section to give the \textit{path/to/folder/where/data/is/stored/}, the datafile must be named \textit{`higgs.csv'}. 
+\item \textbf{algorithms}: The user alters the algorithm acronym here to run different algorithms.
+\item \textbf{pipeline}: Extensive comments in \texttt{settings.ini}
+\item \textbf{algorithmName}: The user does not need to (and should not) change this section.  
+\item \textbf{userParams}: Extensive comments in \texttt{settings.ini}
+\end{enumerate}
+
+Individual model parameters are specified under sections - \textbf{DT}, \textbf{BDT}, \textbf{RF}, \textbf{ET}, \textbf{BRF}, \textbf{BXT}. 
+
+Since they all use trees as primitive learners, they have a lot of common parameters.
+
+\begin{table}[ht]
+\resizebox{\textwidth}{!}{
+\begin{tabular}[width=\textwidth]{|l|c|c|c|c|c|c|c|}
+Algorithm & n$\_$estimators & criterion & max$\_$features & max$\_$depth & min$\_$samples$\_$split & min$\_$sample$\_$leaf & learning$\_$rate \\
+\toprule
+DT & & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & \\
+\midrule
+BDT & $\bullet$ &  & & & & & $\bullet$  \\
+\midrule
+RF & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & \\
+\midrule
+ET & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & \\
+\midrule
+BRF & $\bullet$ &  & & & & & $\bullet$ \\
+\midrule
+BXT & $\bullet$ &  & & & & & $\bullet$ \\
+\bottomrule
+\end{tabular}}
+\caption{Necessary parameters for the tree algorithms}
+\end{table}
+
+These are not arbitrary letters, rather they are acronyms for the full names of algorithms which are too long to be peppered around in the code or in the text. For instance, BRF stands for Boosted Random Forests. The thesis provides background on what the parameters for each model mean in the context of trees and \texttt{settings.ini} provides some guidance.
+
+\section{Outputs}
+
+\subsection{Log file}
+In each run a log file with the file name format \texttt{higgs$\_$classification$\_$pipeline$\_$id$\_$147*******} is generated in the \texttt{/Logs/} sub-directory. The final suffix starting with 147 of the file name is a unique identifier, it is constructed by using time since epoch in seconds. This ensures that log files created in repetitive runs have unique (and in this case increasing) file name identifiers and do not overwrite existing logs. Apart from writing to the log file, the \texttt{sys.out} is also printed on the screen.
+
+\subsection{Performance Report}
+A performance report with the file name format \texttt{Classifier$\_$Performance$\_$Report$\_$algorithm$\_$xx.txt} is generated in each run and stored in the \texttt{Results/} sub-directory. The final suffix `xx' of the file name is a random two-digit integer. This is to ensure that a moderate number of repetitive runs of the same algorithm will create new files and not overwrite existing ones. If you run the same algorithm 100 times, you will most certainly overwrite one of the existing reports.  
+
+\subsection{Significance Curve ($\sigma$)}
+In the settings file there is a boolean variable (under pipeline) that governs if a significance curve should be generated and saved (in \texttt{/Graphs/}). This curve depicts the AMS ($\sigma$) at 1500 thresholds between 80 and 95 using a step size of 0.01. This curve is the definitive performance benchmark against which all algorithms are assessed and compared. If the setting to generate this curve is set to \texttt{False}, no curve will be generated and only a single AMS $\sigma$ at the 85th percentile threshold is computed and written out to logs and in the performance report. 
+  
+\section{Testing}
+
+Using this code base a user can, 
+
+\begin{itemize}
+\item Train and test a machine learning algorithm (specified by the user in the settings.ini) on the ATLAS higgs dataset, after selecting the chosen algorithm in the \texttt{settings.ini} file the user can can run \texttt{>> python $\_\_$main$\_\_$.py}. Before testing, the user must ensure the following:
+\begin{itemize}
+\item To point to the correct version of Python (2.7.3).
+\item Download the data (as mentioned above) and place it in the \texttt{/Data/} sub-directory, do not forget to rename it to \textit{higgs.csv}. 
+\item Ensure all python packages specified in the README are installed. 
+\end{itemize}
+If there are no unforseen errors, running of the $\_\_$main$\_\_$.py should create a log file (in \texttt{/Logs/}), print out and store a performance report (in \texttt{/Results/}) and save the plot of the significance curve (in \texttt{/Graphs/})
+\item The user can use the stand alone scripts in the \texttt{plotting$\_$scripts} sub-directory to generate the plots in the thesis. The scripts have been enriched with docstrings to provide direction to the user. The most useful of these scripts are \texttt{compare$\_$boosted$\_$ensembles} and \texttt{compare$\_$forest$\_$models}, they rely on pre-trained pickled models. 
+\end{itemize}
+
+\begin{center}
+Thank you
+\end{center}
+\end{document}

@@ -1,0 +1,51 @@
+%\section{Recap of the problem}
+%\label{mlc}
+%
+%The machine learning aim of this thesis is to explore the statistical challenges in classifying signal (higgs events) from background (non-higgs events). In constructing a classifier for this problem one needs to address the main sources of complexity in the data. They arise from overlap and imbalance.
+%
+%Both the signal and background events in the data have the same decay signature with the only discriminating feature being the subtle differences in the measured properties of their decay products.
+%
+%The signal events represent collisions where the parent Higgs was created and background events represent collisions where the parent particle was not Higgs but shared the same tau-tau decay channel. Neutrinos created in the collisions escape detection and the only feature hinting at their properties is the missing transverse momentum explained in section \ref{missing} of Chapter \ref{intro}. In the rest of the thesis, the following terminology is applied.
+%
+%\begin{enumerate}
+%\item Signal event: An event in which a Higgs decays to a pair of tau leptons. In machine learning vocabulary, a signal is a member of the positive class.
+%\item Background event:  An event in which a non-Higgs decay process occurs. In machine learning vocabulary, a background event is a member of the negative class. 
+%\item Selection Region: A classifier outputs a score or a discriminant value $f(\textbf{x})$ which is a score taking small values for the negative class and large values for the positive class. The selection region is defined by applying a threshold of choice $\theta$ on $f(\textbf{x})$ and selecting all the events that lie above the threshold.
+%\end{enumerate}
+%
+%From a machine learning perspective, a classifier in this context has to tackle the following challenges:
+%
+%\begin{enumerate}
+%\item The classes completely overlap, the signal and background events appear coalesced when visualized for different features. 
+%\item The discovery significance metric AMS ($\sigma$) is unusual and not a function of classification accuracy. 
+%\item The classifier in this context is used as a selection method which defines a region in the feature space rich in signal events. The data consists of 30 features. 
+%\item The AMS metric is prone to over-fitting as the value of the AMS depends upon a small number of events selected as signal by the classifier. 
+%\item The AMS is noisy and not conducive to direct optimization, instead a classifier is designed to optimize a machine learning metric which closely reflects the AMS. 
+%\end{enumerate}
+
+
+%The use of standard machine learning performance metrics like accuracy and error rate are rendered misleading in the presence of imbalanced classes. For instance, it is straightforward to achieve an accuracy of 75\% in a domain where the majority class corresponds to 75\% of the instances. 
+
+In class imbalance problems the minority class is usually of primary interest .i.e., the error costs are not uniform across both classes. For instance, it might be more critical to detect as many of the positive class instances correctly than to miss-classify some of the instances of the negative class. This is usually the case in real-world applications with majority-minority class distributions. The costs of classifying a sick person as healthy is far greater than classifying some healthy persons as sick. In such cases the false negative rate is a far more critical measure of performance than the false positive rate.
+
+In the Higgs problem where we are trying to classify signal from background, we have established that the AMS ($\sigma$) is far more sensitive to the presence of background events in the selection region (false positives) and is less sensitive to the signals dropped off in the rejection region. What matters is the purity of events in the selection region, this is affected more by false positives than by false negatives. 
+
+%\section{Complexity in binary classification}
+%
+%While class overlap may occur in classification problems, the fact that they arise from two  different underlying distributions should leave hidden markers to differentiate them. Data from two non-random underlying distributions is different to data that has been randomly labelled even if the former completely overlap. In this section we discuss some measures that characterize the difficulty of a classification problem in the presence of overlap \cite{hobasu}. Measures that quantify the difficulty of classifying at the dataset level and at the data point level can provide avenues for meta-learning.  
+%
+%\begin{enumerate}
+%
+%\item Fisher's discriminant ratio (F1): 
+%It is defined as, 
+%\begin{equation}
+%f = \frac{(\mu_{1} - \mu_{2})^2}{\sigma_{1}^{2} + \sigma_{2}^{2}}
+%\end{equation}
+%where $\mu_{1}$, $\mu_{2}$, $\sigma_{1}^{2}$, $\sigma_{2}^2$ are the means and variances of the two classes for a particular feature is a measure of how the respective feature contributes to class discrimination.  
+%
+%\item Tomek links:  Given a dataset $\mathbf{D} = \{(\mathbf{x}_{1},y_{1}) \ldots (\mathbf{x}_{n},y_{n})\}$ where each $\mathbf{x}_{i} \in \mathbb{R}^d$ and $d > 1$, a pair of points $(\mathbf{x}_{i}, \mathbf{x}_{j})_{i \neq j}$ has a tomek link if $d(\mathbf{x}_{i}, \mathbf{x}_{j}) < d(\mathbf{x}_{i}, \mathbf{x}_{k})$ $\forall k \in n$ and $y_{i} \neq y_{j}$, $d$ is a distance metric. In other words if the nearest neighbour of a data point is a member of a different class then a tomek links exists between the two points. Detecting and removing tomek links from the training dataset is a method of de-noising the data and can many times boost classification performance and give smoother decision boundaries.   
+%
+%Detection of tomek links when each data point has several dimensions is a non-trivial problem, it essentially amounts to search in a high dimensional space. A naive implementation has a complexity of $\mathcal{O}(n^{2})$.
+%
+%\end{enumerate} 
+

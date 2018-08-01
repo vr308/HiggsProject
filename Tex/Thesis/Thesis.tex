@@ -1,0 +1,182 @@
+\documentclass[a4paper,twoside]{report}
+\usepackage[a4paper, margin=35mm]{geometry}
+\usepackage{graphicx}
+%\usepackage[T1]{fontenc}
+\usepackage{bookmark}
+\usepackage{array,booktabs}
+\usepackage{lmodern}
+\usepackage{float}
+\usepackage{multirow,bigdelim}
+\usepackage{textcomp}
+\usepackage{fancyhdr}
+\usepackage{amsmath}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\argmin}{argmin}
+\newcommand{\pvalue}{\mathop{p{\textnormal{-value}}}}
+\usepackage{algorithmic,algorithm}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{titlepic}
+\usepackage{url}
+%\renewcommand{\familydefault}{\sfdefault}
+\usepackage{tocvsec2}
+\usepackage[titletoc]{appendix}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tocloft}
+\usepackage{csquotes}
+\usepackage{rotating}
+%\usepackage[round]{natbib}  
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage[acronym,toc,section=section]{glossaries}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\nouppercase{\leftmark}}
+%\fancyhead[RE,LO]{\nouppercase{\rightmark}}
+\fancyfoot[CE,CO]{\thepage}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\abstractname}{\Large Abstract}
+\renewcommand\cftloftitlefont{\Large\bfseries}
+\newenvironment{Acknowledgements}
+  {\renewcommand{\abstractname}{\Large Acknowledgements}
+   \begin{abstract}}
+  {\end{abstract}
+   \clearpage}
+\usepackage[nottoc,notlof,notlot]{tocbibind} 
+\floatevery{algorithm}{\setlength\hsize{10cm}}
+\renewcommand\cftchapaftersnum{. }
+\renewcommand\cftsecaftersnum{.}
+\renewcommand\thechapter{\Roman{chapter}}
+\renewcommand\thesection{\arabic{section}}
+\renewcommand\cftchapnumwidth{2em}
+\setlength\parindent{0pt}
+\setlength{\parskip}{1em}
+\makeglossaries
+\hypersetup{colorlinks=false,linkcolor=blue,citecolor=ForestGreen}
+\renewcommand\bibname{References}
+\def\thesection{\arabic{section}}
+\hbadness=10000
+\hfuzz=500pt
+\linespread{1.0}
+\addtolength{\cftsecnumwidth}{10pt}
+\newcommand\textline[4][t]{%
+  \par\smallskip\noindent\parbox[#1]{.600\textwidth}{\raggedright #2}%
+  \parbox[#1]{.333\textwidth}{\centering#3}%
+  \parbox[#1]{.333\textwidth}{\raggedleft #4}\par\smallskip%
+}
+\makeatletter
+\renewcommand{\l@figure}{\@dottedtocline{1}{2.5em}{4.3em}}
+\makeatother
+
+\begin{document}
+%\pagestyle{fancy}
+\begin{titlepage}
+\begin{center}
+
+\includegraphics[scale=0.3]{images/Camlogo.jpg}
+
+\vspace{15mm}
+\noindent\rule{14cm}{0.4pt}
+\vspace{0.1pt}\\
+\textbf{\Large A meta-algorithm for classification using random recursive tree ensembles: A high energy physics application}
+\vspace{0.1pt}\\
+\noindent\rule{14cm}{0.4pt}\\
+\vspace{20mm}
+\textit{Submitted towards partial fulfilment for the Master of Philosophy in Scientific Computing}\\
+\vspace{30mm}
+\large{Vidhi Ramesh Lalchand}\\
+\vspace{6mm}
+\end{center}
+\vspace{45mm}
+\textline[t]{
+\textit{Supervisor:} \\
+Dr. Anita Faul \\
+Laboratory for Scientific Computing\\
+Department of Physics\\
+}{}{Clare Hall}
+\vspace{10mm}
+\begin{center}
+August 31, 2016
+\end{center}
+\end{titlepage}
+
+\thispagestyle{empty}
+\textit{This dissertation is substantially my own work and conforms to the University of Cambridge's guidelines on plagiarism. Where reference has been made to other research this is acknowledged in the text and bibliography.}
+\clearpage
+
+\thispagestyle{empty}
+\null\vfill
+\begin{center}
+\begin{tabular}{l}
+  A man ought to read \\ 
+  just as his inclination leads him; \\
+  for what he reads as a task \\ 
+  will do him little good.\par
+ \end{tabular}
+ 
+  \textup{\hspace{35mm} -Samuel Johnson \\\hspace{28mm}1709-1784}
+   \end{center} 
+\vfill\vfill
+\clearpage
+
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+\input{chapters/acknowledgements}
+
+\input{chapters/glossaries}
+\input{chapters/abstract}
+
+\tableofcontents 
+
+\clearpage
+\listoffigures
+\clearpage
+\printglossary[type=\acronymtype, title=Abbreviations,toctitle=Abbreviations,nonumberlist]
+\printglossary[title=Symbols, toctitle=Symbols,nonumberlist]
+
+\clearpage
+\glsunsetall
+\addcontentsline{toc}{section}{\listfigurename}
+
+\chapter{Introduction}
+\label{intro}
+\input{chapters/introduction}
+
+\chapter{Machine learning in HEP: A review}
+\label{mlhep}
+\input{chapters/mlhep}
+
+\chapter{The formal problem}
+\label{formal}
+\input{chapters/formalproblem}
+
+\chapter{Performance Metrics: A discussion}
+\label{performance}
+\input{chapters/performance}
+
+\chapter{On meta-algorithms: Bagging \texorpdfstring{$\&$}{} Boosting}
+\label{ad}
+\input{chapters/algodesign}
+
+\chapter{Results on the ATLAS Higgs dataset}
+\label{results}
+\input{chapters/results}
+
+%\chapter{Review of ATLAS Kaggle Higgs ML Challenge: Winning solutions}
+%\label{kaggle}
+%\input{chapters/kaggle}
+
+\chapter{Conclusion}
+\label{concl}
+\input{chapters/conclusion}
+
+\bibliographystyle{plain}
+\bibliography{References}
+
+\addcontentsline{toc}{part}{\normalsize \appendixname}
+
+\chapter*{Appendix}
+\input{chapters/appendix}
+
+\end{document}

@@ -1,0 +1,10 @@
+*.log
+*.toc
+*.gz
+*.log
+*.out
+*.acn
+*.lof
+*.ps
+*.ist
+*.acr

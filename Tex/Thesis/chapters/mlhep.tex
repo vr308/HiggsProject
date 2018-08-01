@@ -1,0 +1,59 @@
+
+\section{Supervised learning for event classification}
+
+Classifying new particles is not quite like generic classification tasks\footnote{Classifying cat videos would be an example of a generic classification task.}. The main reason is that in experimental high energy physics (HEP) we are looking to verify whether events of a certain class exist or not. More formally, we are looking to verify one of two hypotheses,
+
+$H_{1}$ : A certain decay/event is known to happen \\
+$H_{0}$ : It doesn't 
+
+The rejection of the null hypothesis entails in detecting an excess of events of the positive signal class with a high significance level as described in Chapter 1 section \ref{esp}. The detection of the excess occurs through casting this question into a supervised binary classification framework where each event is classified into one of two classes - signal or background. Most problems that harness supervised classification algorithms derive conclusions from evaluating the direct accuracy of the classification process on unseen data. In HEP, the important factor is not accuracy per se but significance. In this respect, HEP differs from other standard applications of machine learning classification. 
+
+At the heart of most classification models lies a mathematical function that calculates a value $f(x)$ on an input $x$. This can be thought of as a discriminant score taking small values for the  negative class (background) and large values for the positive class (signal). The classification step assigns to each event $x$ the associated discriminant value $f(x)$. The discriminant values can be thought of as a ranking of the events where the events most likely to be signal have larger values and vice versa. By applying a threshold on the discriminant score a selection region is derived where an event with a discriminant value larger than the threshold, say $f(x) > \theta$ is predicted to be a signal event and the others are predicted to be background events. 
+
+The selection region is a (not necessarily connected) region in the feature space where an excess of signal events is expected over background. It is fully determined by the discriminant value function $f(x)$ and a choice of threshold $\theta$. It consists of all events which are predicted to be signals by the classifier.
+
+The acceptance or rejection of the null hypothesis is based on the number of true positives and false positives which lie in the selection region of a classifier. The true positives in the selection region are events with a true class label of signal (these are the hits or correct predictions by the classifier) and false positives are events in the selection region with a true class label of background.
+
+From a machine learning perspective we are interested in building a classifier which yields a selection region that has an excess of true positives over false positives. The degree of this excess is directly connected to the significance measurement.
+
+The motivation for the section above is to give a flavour of the steps entailed in event classification in the context of supervised learning. The formal framework of the steps described above and the measurement of discovery significance are described in Chapters \ref{formal}, \ref{performance}.
+
+The sections below discuss published approaches of some of the most popular machine learning techniques for event classification at experiments at CERN and at other particle colliders. 
+
+\section{Neural Networks (NN)}
+
+NNs had a timid start in high energy physics in the late 80s but since the last decade and the advent of deep learning, NNs have started to be used more broadly. This is probably both due to an increased complexity of the data to be analysed and the demand for non-linear techniques. 
+
+NNs are used for both trigger classifiers and off-line data analysis. Trigger classifiers are used as online algorithms that discard uninteresting\footnote{Events which are unlikely to be of the positive signal class.} events as and when they are generated. Online trigger systems at the LHC reduce the rate of data-collection by several orders of magnitude and have sub-millisecond response times. The trigger systems frequently use specialized neural network chips for the task. Two experiments which use neural network triggers are DIRAC \cite{dirac} and H1 \cite{h1}. In the H1 trigger system, a multi-stage system is used with a feed-forward 3 layer NN applied in each stage with the output being 1 or 0 for signal or background respectively. 
+
+For particle identification in offline data analysis, the most successful application of NN has been in detecting the decay of the Z boson. A feed-forward network was used to discriminate the decay of the Z boson into c, b or s quarks. 
+
+One of the main advantages of NNs is that they are intrinsically parallel and tolerant to noise. However, the poor interpretability of NN outputs versus other techniques like Boosted Decision Trees (BDTs) are marked disadvantages. Most of the current work involving applications of NNs to HEP are in the space of deep learning, section \ref{deep} includes a discussion.  
+ 
+\section{Boosted Decision Trees (BDT)}
+
+BDTs have been by far the most popular technique for analysing data from HEP experiments for particle identification. In the MiniBooNE experiment \cite{yang} at the Fermi National Laboratory (Fermilab) for neutrio oscillations, tuned BDTs were used after a careful comparison of several boosting algorithms. The study shows that the BDT is not only better at event separation but is also more stable and robust than NN. In BDTs, decision trees act as component classifiers, the component classifiers are also called `weak' learners which are applied stage-wise. At each stage events that are misclassified are over-weighted and the same weak classifier is applied on the re-weighted data. This process continues until the error metric saturates. AdaBoost is known to be the most successful algorithm based on the boosting technique, \cite{yang} confirms on the basis of numerous trials that AdaBoost was superior in performance to the rest. 
+
+\cite{cascade} uses a cascade idea with a two stage training process involving either a BDT or a NN or both in individual stages. The intuitive idea is to show that successive training improves the performance of a single stage classifier and the best results are obtained through hybridization .i.e. when using a different classifier at each stage.   
+
+\section{Deep learning in HEP}
+
+\label{deep}
+
+In many of the problems in experimental physics we don't know what we are looking for, events are not labelled, this creates a classic use case for deep learning which fundamentally works as an unsupervised process attempting to model high level abstractions in the data. 
+
+The big question for the future is if deep learning techniques can outperform the current learning methodologies and significantly improve discovery significance.
+
+There are two open questions surrounding this debate. 
+
+\begin{enumerate}
+\item Can deep learning techniques beat the abilities of veteran physicists in coming up with features that have high discriminatory power? Can they do it just by looking at the raw data from the collider? 
+\item Deep learning is known to be computationally expensive, does the marginal contribution to classification power over relatively shallower learning architectures justify the computational cost?
+\end{enumerate}
+
+There is a serious computational challenge in training models with deep architectures that usually involve several layers of adaptive parameters.  
+
+In \cite{deep} they use a deep network architecture for the $H \rightarrow \tau^{+} \tau^{-}$ benchmark search and claim to improve the AUC score (area under the ROC curve, see Chapter \ref{performance}) by 8\% and achieve a discovery significance of 5$\sigma$. They divide the feature set into high-level and low-level features. The low-level features are the raw quantities captured by the particle detector like type, energy and momentum of the particles in the decay product. High-level features on the other hand refer to physical quantities that are computed using the low-level features. The shallow methods trained with only low-level features perform worse than with only high-level features implying that shallow methods are not able to independently discover the information reflected in high level features. This motivates the calculation of high-level features. While methods trained only on high-level features perform worse than those trained on the full suite of features, deep architectures show nearly equivalent performance using low-level features and complete feature set suggesting that they are automatically discovering the insight contained in high-level features. These results demonstrate the advantage of using deep learning techniques relative to current approaches. The data used for this study did not come from the official ATLAS event simulator and the author does not discuss the computational set-up for the experiment.  
+
+Owing to the popularity and wide acceptability of BDTs in HEP, the algorithm proposed in this thesis is a variant on the traditional boosted machine. The next chapter introduces the formal $H \rightarrow \tau^{+} \tau^{-}$ problem in a classification context.  
+ 
