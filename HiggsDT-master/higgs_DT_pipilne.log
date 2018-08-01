@@ -1,0 +1,51 @@
+Step 1 : Loading Data
+Step 2 : Enriching train and test sets
+Computing metrics for baseline unoptimized tree
+Writing out performance metrics for unoptimized CART trees
+AMS under Entropy :(inf, 1.706889166940179)
+AMS under Gini :(inf, 1.6619844197375226)
+             precision    recall  f1-score   support
+
+          0       0.77      0.78      0.78      9046
+          1       0.75      0.74      0.75      8105
+
+avg / total       0.76      0.76      0.76     17151
+
+             precision    recall  f1-score   support
+
+          0       0.78      0.79      0.78      9046
+          1       0.76      0.75      0.75      8105
+
+avg / total       0.77      0.77      0.77     17151
+
+ROC score for baseline tree with Gini crietrion 0.761002255522
+ROC score for baseline tree with Entropy criterion 0.76611758695
+Step 4 : Setting optimum parameters for CART trees
+ Step 4 : Fitting CART tree with 2 sets of optimal parameters 
+Step 5 : Compute optimized metrics for fitted trees  
+Writing out performance metrics for optimized CART trees
+ROC  under ROC optimized tree : 0.887949466044
+ROC  under R(f) optimized tree : 0.886144645852
+             precision    recall  f1-score   support
+
+          0       0.86      0.72      0.78      9046
+          1       0.74      0.87      0.80      8105
+
+avg / total       0.80      0.79      0.79     17151
+
+             precision    recall  f1-score   support
+
+          0       0.86      0.72      0.78      9046
+          1       0.73      0.87      0.80      8105
+
+avg / total       0.80      0.79      0.79     17151
+
+Balanced classification error under ROC optimal tree : 0.192064644489
+Balanced classification error under R(f) optimal tree :0.182103392306
+AMS under ROC optimal tree : (5.240547627679676, 3.312466701532659)
+AMS under R(f) optimal tree : (4.8422316957625275, 2.969690972220109)
+ Step 4 : Plot ROC curves under the 2 fitted trees
+Step 5 : Plot AMS curves using the two optimizing sets of parameters over a whole range of thresholds
+Step 6 : Graphing output saving to Graphs/
+Step 7 : Calibrating Probability Models
+Step 8 : AMS under 2 different probability models

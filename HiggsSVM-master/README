@@ -1,0 +1,39 @@
+----------------------
+Package dependencies 
+----------------------
+Python version 2.7.3
+
+pandas
+sklearn 
+matplotlib
+----------------------
+Actions before running
+----------------------
+
+Edit the 'path' variable in line 2 run_svm.sh 
+
+current : export path='/home/raid/vr308/workspace/Python/higgSVM/'
+new     : export path='path to the folder /higgsSVM'
+
+----------------------
+Command Line Arguments
+----------------------
+
+There are 5 running modes.
+
+1)./run_svm.sh [no args]
+2)./run_svm.sh uniform_sample train
+3)./run_svm.sh choice_sample train
+4)./run_svm.sh uniform_sample test
+5)./run_svm.sh choice_sample test
+
+Notes :
+
+1) would default to 5)
+Running under train mode will run cross validation, persist results, plots and then conduct training. 
+Running under test mode will only run results under optimized parameters.
+
+CV results are in /Results
+Plots are in /Graphs
+Data is in /Data
+

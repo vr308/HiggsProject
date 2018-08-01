@@ -1,0 +1,62 @@
+---------------------
+Notes
+---------------------
+
+Instructions for running the source code in HiggsML submitted to support the results presented in Thesis titled:
+"A meta-algorithm for random recursive tree ensembles: A high energy physics application."
+
+---------------------
+Author 
+---------------------
+Vidhi Ramesh Lalchand
+
+---------------------
+Development Platform 
+---------------------
+
+Python V2.7.3 
+
+---------------------------
+Python Package dependencies
+---------------------------
+
+numpy 1.6.1
+pandas 0.7.0
+sklearn 0.16.1
+scipy 0.9.0
+matplotlib  1.1.1rc
+angles 2.0
+
+--------------------
+Build Instructions
+--------------------
+
+None - (see CodeGuidance.pdf)
+
+-------------------
+Run Instructions 
+-------------------
+
+python __main__.py 
+
+This will trigger a run of 
+the classification engin
+
+-------------------
+Command line arguments 
+-------------------
+
+There are no command line arguments
+
+---------------------------
+Configuration/Settings File
+---------------------------
+
+Included - settings.ini
+
+--------------------------
+Runtime Analysis
+--------------------------
+
+Logs and runtimes for different blocks of code execution printed to sys.out
+

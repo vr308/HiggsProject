@@ -1,0 +1,131 @@
+[Parallel(n_jobs=1)]: Done   1 jobs       | elapsed:    3.8s
+[Parallel(n_jobs=1)]: Done  50 jobs       | elapsed:  2.4min
+[Parallel(n_jobs=1)]: Done  75 out of  75 | elapsed:  4.6min finished
+NOTE : Full training, cross validation and optimization will be conducted before testing
+
+-------------------------Starting PREPROCESSING-------------------------------
+
+Step 1 : Loading data
+Step 2 : Dropping redundant features
+Step 3 : Cleaning up missing value tags : -999.0
+
+---------------------Finished PREPROCESSING stage, took 3.59 seconds----------
+
+--------------------------Starting SAMPLING-----------------------------------
+
+Step 1 : Scaling features, drawing uniform sample
+Step 2 : Scaling features, drawing choice sample (+/- 1.6*sd) around mean for each feature 
+Step 3 : Preparing training and test data
+
+------------------------Finished SAMPLING stage, took 4.11 seconds------------
+
+-------------------------Starting TRAINING and CROSS VALIDATION----------------------------------------
+
+Step 1 : Optimizing parameters C and gamma (RBF Kernel) on a base10 & base2 grid for ROC and balanced classification error 
+
+ Step 1 : Grid search for ROC optimal and R(f) optimal parameters
+Fitting 3 folds for each of 25 candidates, totalling 75 fits
+Writing output to file : Results/grid_scores_base10_roc_auc_uniform_sample_sample.txt
+
+Iteration 1 of 25
+
+Iteration 2 of 25
+
+Iteration 3 of 25
+
+Iteration 4 of 25
+
+Iteration 5 of 25
+
+Iteration 6 of 25
+
+Iteration 7 of 25
+
+Iteration 8 of 25
+
+Iteration 9 of 25
+
+Iteration 10 of 25
+
+Iteration 11 of 25
+
+Iteration 12 of 25
+
+Iteration 13 of 25
+
+Iteration 14 of 25
+
+Iteration 15 of 25
+
+Iteration 16 of 25
+
+Iteration 17 of 25
+
+Iteration 18 of 25
+
+Iteration 19 of 25
+
+Iteration 20 of 25
+
+Iteration 21 of 25
+
+Iteration 22 of 25
+
+Iteration 23 of 25
+
+Iteration 24 of 25
+
+Iteration 25 of 25
+
+Writing output to file : Results/grid_scores_base10_balanced_classification_erroruniform_sample.txt
+
+Step 2 : Saving visualizations
+
+----------Finished TRAINING and CROSS VALIDATION, took 10.9786666667 minutes--------------
+
+--------------------------------Starting TESTING------------------------------------------
+
+Computing AMS for % Rejection threshold at 80.0
+AMS Test : 2.96354776684
+Computing AMS for % Rejection threshold at 80.5
+AMS Test : 2.97008019458
+Computing AMS for % Rejection threshold at 81.0
+AMS Test : 2.97560680352
+Computing AMS for % Rejection threshold at 81.5
+AMS Test : 2.90412518216
+Computing AMS for % Rejection threshold at 82.0
+AMS Test : 2.92695703935
+Computing AMS for % Rejection threshold at 82.5
+AMS Test : 2.94095197444
+Computing AMS for % Rejection threshold at 83.0
+AMS Test : 2.86267019551
+Computing AMS for % Rejection threshold at 83.5
+AMS Test : 2.87396932308
+Computing AMS for % Rejection threshold at 84.0
+AMS Test : 2.78187834743
+Computing AMS for % Rejection threshold at 84.5
+AMS Test : 2.77795332479
+Computing AMS for % Rejection threshold at 85.0
+AMS Test : 2.78764611393
+Computing AMS for % Rejection threshold at 85.5
+AMS Test : 2.83156716376
+Computing AMS for % Rejection threshold at 86.0
+AMS Test : 2.86548292749
+Computing AMS for % Rejection threshold at 86.5
+AMS Test : 2.73188355885
+Computing AMS for % Rejection threshold at 87.0
+AMS Test : 3.42701878281
+Computing AMS for % Rejection threshold at 87.5
+AMS Test : 3.29932755725
+Computing AMS for % Rejection threshold at 88.0
+AMS Test : 3.56428941492
+Computing AMS for % Rejection threshold at 88.5
+AMS Test : 3.87408676352
+Computing AMS for % Rejection threshold at 89.0
+AMS Test : 3.67674620293
+Computing AMS for % Rejection threshold at 89.5
+AMS Test : 3.60997403559
+Peak AMS -- 3.87408676352
+
+------------------------Finished TESTING, took 747.42 seconds----------------------
+
