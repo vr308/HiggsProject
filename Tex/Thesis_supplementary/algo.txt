@@ -1,0 +1,49 @@
+
+%In March 2016, the American Statistical Association (ASA) published a statement \cite{asa} clarifying the scientific measure and provided guidelines for its correct usage. The most important point made in the statement is that the widespread misconception about the $\pvalue$ has led to a publication bias where results of scientific experiments with $p<0.05$ are largely considered scientifically worthwhile while the others never get to be seen in print. It also refers to the practice of "$p$-hacking" where the design of the experiment is influenced by the goal of achieving lower $\pvalue$s thus allowing bias to creep into scientific experimentation. $\pvalue$s are not the end goal of experiments, rather they are contextual evidence that suggest that a null hypothesis might warrant further scrutiny. 
+
+
+
+%\subsection{Quality of base learners}
+%
+%Boosting does not impose stringent requirements on the quality of its base learners. In fact, gains from boosting are maximum for learners that are `weak' or just marginally superior to random guessing. Experiments have shown that a sequence of boosted weak learners and a sequence of boosted strong learners converge towards the same performance level. Gains from boosting are negligible for an already well performing model. 
+%
+%Bagging on the other hand, requires base learners to be unstable but so that it can take advantage of the fact that small changes in the training data lead to different classifiers. Bagging accentuates performance by aggregating the performance of heterogeneous classifiers. Bagging requires learners to be unstable (high variance) but accurate (low bias), bagging  on weak learners is labour lost. In this respect, bagging requires stronger learners than boosting. 
+
+%\subsection{Aggregation of base learners}
+%
+%In boosting, the master learner is a weighted linear combination of base learners $\{h_{m}\}$ (see eq. \ref{master}). The weights $\{\alpha_{m}\}$ of the base learners are analytically determined from the performance of the respective classifier $h_{m}$ in the $m$-th stage of boosting (see eq. \ref{alphas}). 
+%
+%In a standard implementation of bagging, the master learner aggregates the output of the base learners through a simple average (if the output is continuous, like probability estimates) or majority voting if the output is categorical, like a class label.  
+%
+%%\subsection{Architecture}
+%
+%Boosted machines learn sequentially, the learner at each stage depends on the output of the learner in the previous stage. Bagging requires the construction of a pre-specified number of bootstrap training sets but there is no dependence between the learners. Bagged models can learn in parallel. 
+
+%\begin{algorithm}[H]
+%\caption{AdaBoost with $M$ stages}
+%\begin{algorithmic}[1]
+%\STATE \textbf{Training}:
+%\STATE \textbf{Input}: Training set $\mathbf{D}$, weak learner $h_{1}$ 
+%\STATE \textbf{Output}: Master learner $M_{h}$ 
+%\item[]
+%\STATE Initialize the data weighting coefficients $\{ w_{i}\} = 1/n$ $\forall i=1 \ldots n$  
+%\FORALL{$m$ = 1 \ldots $M$} 
+%\STATE \textbf{Fit} classifier $h_{m}(\mathbf{x})$ by minimizing the weighted error function $R(h_{m}) = \sum_{i=1}^{N}w_{i}\mathbf{I}(h_{m}(\mathbf{x}_{i}) \neq y_{i})$ 
+%\STATE \textbf{Compute} error rate $\epsilon_{m}$ as the fraction of misclassified samples.
+%\STATE \textbf{Compute} classifier weight $\alpha_{m} = \dfrac{1}{2}\ln\bigg(\dfrac{1-\epsilon_{m}}{\epsilon_{m}}\bigg)$
+%\STATE \textbf{Update} weights for stage $(m+1)$ by, $w_{i}^{(m+1)} = w_{i}^{(m)}e^{\alpha_{m}\mathbf{I}(h_{m}(\mathbf{x}_{i}) \neq y_{i})}$ 
+%\ENDFOR
+%\RETURN $M_{h}(\textbf{x}) = \sign\bigg(\sum_{m=1}^{M}\alpha_{m}h_{m}(\mathbf{x})\bigg)$  
+%
+%\STATE \textbf{Testing}:
+%\STATE \textbf{Input}: Test set $\mathbf{L}$ with $\{\mathbf{x}_{i}\}_{i=1}^{n}$, master learner $M_{h}$, learning rates $\{\alpha_{m}\}_{m=1}^{M}$
+%\STATE \textbf{Output}: Predicted labels $\{\hat{y_{i}}\}_{i=1}^{n}$
+%\item[]
+%
+%\FORALL {$\mathbf{x}_{i} \in \mathbf{L}$}
+%\STATE \textbf{Predict} $\hat{y}_{i} = M_{h}(\mathbf{x}_{i})$ 
+%\ENDFOR
+%\RETURN $\{\hat{y_{i}}\}_{i=1}^{n}$
+%\end{algorithmic}
+%\label{ada}
+%\end{algorithm}

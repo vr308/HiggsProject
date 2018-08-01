@@ -1,0 +1,45 @@
+
+\section{Computing}
+
+The architecture of the meta algorithm MetaB imposes some level of serial execution. Since the training occurs iteratively in independent stages the pipeline for training and testing essentially work in a serial fashion. This is apparent in the algorithm structure presented in \ref{} and \ref{}. 
+
+Within each stage of training we use a randomized forest as a base learner, this algorithm works on the principle of bagging which is an apt candidate for parallel execution. In bagging, the training of each bootstrap sample is conducted independently, hence they can be generated in parallel. The parallelisation of training a forest of trees has been implemented in MPI. 
+
+The algorithm to generate the internal bifurcation of the data uses tomek links, this is computed prior to training and provided as an attribute to the data. The computation of tomek links requires searching for the first nearest neighbour in a high dimensional feature space. Significant performance gains were achieved by using a C++ implementation. The tomek links were precomputed and saved for each data point indexed by their event id. This information was subsequently read in during the internal stages of the training process. 
+
+The size and dimensionality of the dataset were relatively tractable and did not prove to be computational bottlenecks. The full dataset comprised of 800K samples and 30 features, 4 redundant features were dropped and 5 additional features were added during preprocessing leaving the original size relatively unchanged. An advantage of tree learning is that it is blazingly fast relative to neural networks or support vector machines. The optimized python provided version of CART (Classification and Regression trees) algorithm was used for building the decision trees. The table below summarizes the training and test speeds (in terms of run-time seconds) of a single-pass tree, a forest of trees and a boosted forest of trees. 
+
+\textcolor{red}{TODO: Please include runtimes here.}
+ 
+\section{Complexity}
+
+In this section we briefly summarise the computational complexity of the learning algorithms used in this thesis. We present this information using the `Big $\mathcal{O}$ notation' which in this context describes how the algorithm scales to changes in the input size. Mathematically, it provides an upper bound for the growth of a function ignoring lower order terms. %We explain this using two examples.
+
+\begin{equation}
+f(n) = n^{4} + 4n^{3} + n^{2} + 7 = \mathcal{O}(n^{4}) \textrm{ as } n \rightarrow \infty 
+\end{equation}
+
+
+\subsection{Single Decision Tree}
+
+The complexity of building an unpruned binary decision tree when the training dataset has $s$ features and $n$ instances is $\mathcal{O}(sn\log_{2}(n))$. The cost of constructing a binary tree using $n$ samples and 1 feature vector is $\mathcal{O}(nlog_{2}(n))$. In the presence of $s$ features, splitting at each node requires searching through $\mathcal{O}(s)$ features to find the best split, this amounts to a total complexity of $\mathcal{O}(sn\log_{2}(n))$.
+
+In order to query a single data point (pass an unseen data point down a tree until it reaches a leaf), the complexity is $\mathcal{O}(\log_{2}(n))$. 
+
+\subsection{Random Forest}
+
+In a random forest, where we specify the number of trees, say $M$ trees, the complexity is $\mathcal{O}(Msn\log_{2}(n))$. However, this is not exact as in a random forest, each split considers a random subset of features and this random selection of features adds an additional overhead.  
+
+The $\mathcal{O}(Msn\log_{2}(n))$ complexity is worst-case assuming that the depth of the tree is going to be $\mathcal{O}(\log_{2}(n))$. In most cases the tree terminates much before this upper bound is reached as the stopping criterion is triggered. For instance, if we set a criterion for the minimum number of samples required for a node split to be 500, nodes with less than 500 samples would convert to leaves and stop growing on that branch. Rules like these prune the unbounded growth of a tree to its maximum achievable depth, they serve as over fitting control. Trees fitted to a training dataset that are allowed to grow to their maximum depth are rarely useful for prediction on new samples as they over fit the training dataset. If the depth of each tree is specified as a parameter before training, the tree stops growing when it achieves the pre-specified depth. In this case the worst case complexity is simplified to $\mathcal{O}(Msnd)$ where $d$ is the pre-specified tree depth.
+
+In order to query a single data point on a random forest with $M$ trees of depth $\log_{2}(n)$, the complexity is $\mathcal{O}(M\log_{2}(n))$. With $M$ trees of depth $d$, it becomes $\mathcal{O}(Md)$.
+
+\subsection{Boosting}
+
+The complexity of a boosting algorithm where the complexity of the underlying base learner, say T is $\mathcal{O}(T)$ is $\mathcal{O}(NT)$ where N is the number of rounds of boosting. The dependence is trivially linear as in each stage the cost is $\mathcal{O}(T)$ and with N stages, it is  $\mathcal{O}(NT)$. Where T is a random forest with $M$ trees, the cost of boosting $N$ random forests is $\mathcal{O}(NMsn\log_{2}(n))$.
+
+The cost of querying a $N$ stage boosting algorithm with a random forest (of $M$ trees) as base learner is $\mathcal{O}(NM\log_{2}(n))$.  
+
+\subsection{MetaB}
+
+\textcolor{red}{TODO: Describe the joint computational cost of the algorithm.} 

@@ -1,0 +1,115 @@
+\documentclass[a4paper,twoside]{report}
+\usepackage[a4paper, margin=35mm]{geometry}
+\usepackage{graphicx}
+%\usepackage[T1]{fontenc}
+\usepackage{bookmark}
+\usepackage{array,booktabs}
+\usepackage{lmodern}
+\usepackage{float}
+\usepackage{multirow,bigdelim}
+\usepackage{textcomp}
+\usepackage{fancyhdr}
+\usepackage{amsmath}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\argmin}{argmin}
+\newcommand{\pvalue}{\mathop{p{\textnormal{-value}}}}
+\usepackage{algorithmic,algorithm}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{titlepic}
+%\renewcommand{\familydefault}{\sfdefault}
+\usepackage{tocvsec2}
+\usepackage[titletoc]{appendix}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tocloft}
+\usepackage{csquotes}
+\usepackage{rotating}
+%\usepackage[round]{natbib}  
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage[acronym,toc,section=section]{glossaries}
+\pagestyle{fancy}
+
+\begin{document}
+
+\chapter{Splitting Criterion}
+\label{split}
+\section{Gini index}
+The gini impurity is a decision tree splitting metric used by the CART\footnote{Discussed in section \ref{CART}} algorithm. In decision trees used for classification, the gini index is used to compute the impurity of a data partition. Given a training set $S$ and a target attribute that takes on $k$ different values (classes), the gini index $\mathcal{G}$ of set $S$ is defined as,
+   
+\begin{align*}
+\mathcal{G}(S) &= \sum_{i=1}^{k} p_{i}(1 - p_{i})  \\
+&= \sum_{i=1}^k(p_{i} - p_{i}^2) \\
+&= \sum_{i=1}^k p_{i} - \sum_{i=1}^k p_{i}^2 \\
+ &= 1 - \sum_{i=1}^k p_{i}^{2}  
+\end{align*}
+
+where $p_{i}$ is the probability of an item chosen at random from the training set belonging to class $i$. If a subset has only 1 class, its gini index is $0$ $(=1 - 1^{2})$, such a set is a pure dataset. On the other hand if the class distribution is balanced i.e. probability of an item belonging to class $i$ is $1/k$, its gini index achieves the maximum.
+
+The gini splitting criterion requires the computation of a gini gain $\hat{\mathcal{G}}$ for each feature $f$. 
+
+%where $S_{j}$ is the partition induced by the value of attribute $f$ and
+Let feature $f$ take on $m$ unique values in $\mathbb{R}$. For each unique value $f_{j}, j = 1,...m$ the gini gain $\hat{\mathcal{G}}(f_{j},S)$ is computed as, 
+
+\begin{align*}
+\hat{\mathcal{G}}(f_{j},S) &= \mathcal{G}(S) - \mathcal{G}(f_{j},S)  \\
+&= \mathcal{G}(S) - \Bigg[ \dfrac{|S_{left}|}{|S|} \mathcal{G}(S_{left}) + \dfrac{|S_{right}|}{|S|} \mathcal{G}(S_{right}) \Bigg]
+\end{align*}
+ 
+$S_{left}$ and $S_{right}$ are the partitions resulting from splitting the set on the basis of feature value $f$. $S_{left}$ represents the set with feature value $f < f_{j}$ and $S_{right}$ represents the set with feature value $f > f_{j}$. The feature $f$ and value $f_{j}$ that maximizes the gini gain $\hat{\mathcal{G}}$ are chosen as the splitting criterion at each internal node.
+
+\section{Entropy}
+
+Entropy as a splitting metric is used by  ID3, C4.5 and C5.0 tree algorithms. As the name suggests it is based on the concept of entropy in information theory. The entropy of a random variable is a measure of uncertainty and is mathematically defined by Shannon as, 
+
+\begin{equation}
+H(X) = \sum_{i=1}^n P(x_{i})I(x_{i}) = - \sum_{i=1}^n P(x_{i})log_{b}P(x_{i})
+\end{equation} 
+
+where X is a discrete random variable which takes values in $\{x_{1},...,x_{n}\}$, $b$ is the base of the logarithm used, in Shannon entropy $b = 2$ to represent encoding using bits. $I(\bullet)$ is a measure of information content for $x_{i}$ and is encoded in terms of the logarithm function.
+
+The rationale behind using the logarithm function as a measure of information content is that it is additive for independent events. If event $1$ occurs with probability $p_{1}$, $I(p1p2) = I(p1) + I(p2)$.
+If event 1 can have one of $n$ equally likely outcomes and event $2$ can have one of $m$ equally likely outcomes then there are $mn$ possible outcomes of the joint event with probability $p_{1}p_{2}$.  $log_{2}(n)$ bits are needed to encode the first event and $log_{2}(m)$ bits are needed to encode the second event then $log_2{mn} = log_2(m) + log_2(n)$ bits are needed to encode both. Any function that encodes information content should preserve this additivity, hence the choice is logarithmic .i.e. $I(p) = log(1/p)$.
+  
+Information gain under the entropy metric is defined as, 
+
+\begin{equation}
+IG(T,f) = H(T) - H(T|f)
+\end{equation}
+
+where T is a set of training samples, $H$ is the entropy of the parent training set and $H(T|f)$ can be thought of as the weighted entropy of the left and right partition sets induced by a partition on the feature value of $f$. Let $f$ take $m$ unique values in $\mathbb{R}.$ For each unique value $f_{j}, j = 1,...m$ the information gain $IG(T,f_{j})$ is computed as,
+
+\begin{equation}
+IG(T,f_{j}) = H(T) - \Bigg[ \dfrac{|T_{left}|}{|T|} H(T_{left}) + \dfrac{|T_{right}|}{|T|} H(T_{right}) \Bigg]
+\end{equation} 
+
+where $H(T) = -\sum_{i=1}^{k}p_{i}log_{2}p_{i}$ in the presence of $k$ classes and $p_{i}$ is the probability of a sample chosen at random belonging to class $i$. 
+
+Intuitively, both the gini gain and entropy splitting criteria can be thought of as metrics that measure the reduction in impurity from a split and select a split that maximizes this reduction. 
+
+\subsection{Mathematical Formulation}
+
+Given input feature vectors $\{\textbf{x}_{i}\} \in \mathbb{R}^d$ and a target variable $y_{i} \in \{0,1\}$, a DT recursively partitions the training set at each node. 
+
+Without loss of generality, let the data at node $q$ be represented by $Q$. The DT considers for each candidate split $\phi = (f,f_{j})$ where $f$ is a feature and $f_{j}$ a threshold, partitions of the data $Q$ into left and and right sets $Q_{l}$ and $Q_{r}$ such that,
+
+\begin{gather*}
+Q_{l}(\phi) = \{\textbf{x}_{i} \in Q : \textbf{x}_{i} \leqslant f_{j}\} \\
+Q_{r}(\phi) = \{\textbf{x}_{i} \in Q : \textbf{x}_{i}> f_{j}\}
+\end{gather*}
+
+The impurity denoted by $\mathcal{E}(\bullet)$ at node $q$ is computed for all valid candidate splits $\phi$ on $Q$ as, 
+
+\begin{equation}
+\mathcal{S}(Q,\phi) = \dfrac{Q_{l}}{Q}\mathcal{E}(Q_{l}(\phi)) + \dfrac{Q_{r}}{Q}\mathcal{E}(Q_{r}(\phi)) 
+\end{equation}
+
+The candidate set $\phi$ that minimizes the sum of impurities of left and right sets is chosen as the parameter for the split.
+
+\begin{equation}
+\phi = \argmin_{\phi}\mathcal{S}(Q,\phi)
+\end{equation}
+
+These steps are applied recursively for sets $Q_{l}$ and $Q_{r}$ to grow the tree until one of the stopping criteria are triggered or all the samples in the node belong to the same class. 
+
+\end{document}

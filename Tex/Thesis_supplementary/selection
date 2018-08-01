@@ -1,0 +1,54 @@
+\section{A Note on the Higgs Mass}
+
+The mass of the Higgs boson does not directly fall out of the standard model. In 2011, data collected by the CMS\footnote{Compact Muon Selenoid is a general purpose particle detector at CERN} allowed a first thorough investigation into the existence of the SM Higgs over a wide mass range. The experiment yielded a first cut excluding the Higgs mass in the range of 127-600 GeV. This left a narrow window where a low-mass Higgs could still exist. In the region below 127 GeV the analysis showed a signal in the vicinity of 124 GeV, however, more data would be required to resolve the precise mass and reach a statistical significance of around 5$\sigma$. The LHC operation at 8 TeV in 2012 coupled with improved statistical analysis revealed an excess of events resolving to a particle with a mass of 125 GeV and this was agreed upon by the collaboration. 
+
+\section{Example}
+
+In this section we present a contrived example to demonstrate the concept of a discriminant or scoring function $f(\mathbf{x})$ and the derivation of a selection region $\mathcal{H}$ in the context of a binary classifier $g$.
+
+Consider a simple closed-form classifier that classifies events based on a value test on the feature DER$\_$mass$\_$MMC (herein mass) in order to classify events as signal or background. Fig. \ref{mass} depicts why this is a challenge. The signal events are embedded within a large background creating intense overlap and hardly any separation. 
+
+\begin{figure}
+\includegraphics[width=\textwidth]{images/mass_MMC.png}
+\label{mass}
+\caption{Distribution of the mass feature bifurcated by signal and background events}
+\end{figure}
+
+Let $\{\mathbf{x}_{i}\}, i=1 \dots n$ be the one-dimensional feature vector denoting the mass feature where $i$ is the event id. $\mathbf{x_{i}}$ is a scalar value since we are looking at a single feature. Let the discriminant or scoring function for this classifier be the closed form function $f(\mathbf{x_{i}}) = \ln\left(\dfrac{1}{|\mathbf{x_{i}} - 125|}\right)$ taking higher values for events with a mass close to 125 and vice versa.  
+ 
+Using $f(\mathbf{x})$ as the scoring function we can compute scores for each event using the mass feature. This gives us a distribution of scores. In order to classify events we then choose a cut-off value $\theta_{k}$ in the form of a percentile threshold where $k$ denotes a percentile. Classification predictions are reached by classifying all events above the threshold to be signals and events below to be background. Fig. \ref{selection} shows the construction of a specific selection region from the scoring distribution $f(\mathbf{x})$ and threshold value $\theta_{85}$.
+
+\begin{figure}
+\includegraphics[width=\textwidth]{images/selection_region.png}
+\caption{Depiction of a selection region with a cut-off at $\theta_{85}$}
+\label{selection}
+\end{figure}
+
+The distribution of scores in \ref{selection} is obtained by applying the function $f(\mathbf{x})$ to the mass feature  $\mathbf{x}$. Predicted signals are all events with a score higher than $\theta_{k}$. More formally, they are events which belong to the set  $\mathcal{H} = \{\mathbf{x} : f(\mathbf{x}) > \theta \}$.
+
+The scoring function $f$ and threshold $\theta_{k}$ induce a specific selection region (eq. \ref{closed}). The predicted signals are most likely to contain both true positives (signal events predicted to be signals) and false positives (background events predicted to be signals). Given how intensely overlapping the signal and background events for this feature are, there is bound to be misclassified events. Fig. \ref{bifurcate_select} shows the distribution of the scoring function bifurcated by the true labels of events. Notice that no matter what threshold $\theta_{k}$ is chosen as a cut-off, there will always be false positives and false negatives. 
+
+\begin{equation}
+(f,\theta) \rightarrow \mathcal{H}
+\label{closed}
+\end{equation} 
+
+\begin{figure}
+\includegraphics[width=\textwidth]{images/bifurcate_selection_region.png}
+\caption{$f(\mathbf{x}$) bifurcated for signal and background events}
+\label{bifurcate_select}
+\end{figure}
+
+The AMS objective function solely depends on the internal properties of the selection region which contains a fraction of the total number of events. In the case of k = 85, the selection region includes only 15$\%$ of the events. Among this small selection of events there are events which are either true positives or false positives and it is the sum across  importance weights associated with these events ($\hat{s}$ and $\hat{b}$) that determine the value of the AMS. 
+
+One of the criticisms of the AMS is that it is not robust to the choice of the threshold $\theta_{k}$. A small change in the threshold changes the composition of the selection region and hence the value of the AMS.
+
+\begin{figure}[ht]
+\includegraphics[scale=0.6]{images/cutoffs.png}
+\label{cutoffs}
+\caption{Effect of varying cut-offs on the selection region}
+\end{figure}
+
+Fig.\ref{cutoffs} shows the effect of changing the threshold $\theta_{k}$ on the selection region. 
+  
+The fact that the AMS is reliant on a small fraction of events creates one of the most fundamental challenges in assessing classifier performance for this task. The next chapter discusses the challenge of performance measurement highlighting how the AMS metric is fundamentally different to any of the standard machine learning metrics. The AMS is unusual in the sense that it does not increase in tandem with improvements in other metrics like accuracy rate, recall, precision or area under the ROC curve. It is possible to have a classifier with lower overall accuracy give a higher AMS score and vice-versa. This is the subject of the next chapter. 

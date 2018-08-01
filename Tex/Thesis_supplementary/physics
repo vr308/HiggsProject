@@ -1,0 +1,329 @@
+Physics deleted
+
+%Fig.\ref{gini} shows the behaviour of the error metric from the viewpoint of optimizing a single decision tree. A single decision tree prefers higher depth and higher number of features to consider at each node, this also shows why they are easily over fit. The pruning parameter indicates the minimum number of events needed in a node to qualify for splitting and the minimum number of events needed to qualify as a leaf. Values higher than 100 deteriorate performance on this dataset. Higher pruning parameters lead to shorter trees, which are more stable but they lack the interaction depth to model relationships in high dimensional data. Optimizing a single tree is fundamentally different to optimizing the parameters of a tree ensemble which uses multiple single trees. In the tree ensemble density plots \ref{depth_features} and \ref{tree_num_features}, the error deteriorates with depth after a convergence point is reached, which in this case (an ensemble of 10 trees) happens to be at a depth of around 12.  
+
+
+%Algorithms like decision trees are rarely affected by the presence of outliers, this is because they apply univariate cuts on feature values and treat each feature independently. The splits are generally determined at non-outlier values for most of the traditional splitting criterion. Because the features are treated independently, DTs are also insensitive to the scale of the different features. 
+
+%Algorithms that rely on the spatial characteristics of the data (like k-nearest neighbours and SVMs) are sensitive to feature scaling and one needs to scale features to bring values to a comparable range. In employing such techniques it might be important to impute the undefined tags of -999.0 to a reasonable value close to the center of the feature distribution.
+
+%The feature \texttt{PRI$\_$jet$\_$num} is the only feature that takes on integer values - 0,1,2 or 3. It refers to the number of jets that were created in the collision. It is interesting to look at background and signal density breakdown by the number of jets created. We notice that jet-free Higgs events (30$\%$) are less frequent than those which occur with atleast one jet (70$\%$). The signal fraction in the last column computes proportion of signals in the specific jet category.  
+%
+%\begin{table}
+%\begin{tabular}{c|c|c|c|c}
+%\texttt{PRI$\_$jet$\_$num} & No. of background & No. of signal & Total & Signal Fraction \\
+%\toprule
+%0 & 239,067 & 81,002 & 320,069 (40$\%$) &  25.31$\%$ \\
+%1 & 159,071 & 88,189 & 247,260 (31$\%$) &  35.66$\%$ \\
+%2 & 78,995 & 82,390 & 161,385 (20$\%$)  &  51.05$\%$ \\
+%3 & 49,492 & 21,794 & 71,286 (9$\%$)    &  30.57$\%$ \\
+%\midrule
+%Total & 526,625 &  273,375 & 800,000 (100$\%$) & \\
+%\end{tabular}
+%\caption{Signal and Background events by number of jets}
+%\end{table}
+
+%\subsection{Fundamental particles}
+%
+%In the standard model (\gls{SM}), several fundamental particles interact to form compound forms of matter. This section provides an overview of some of the particles and also indicates some important abbreviations, notations and terms.  
+%
+%\begin{enumerate}
+%
+%\item \textbf{Leptons} (\textit{l}): Fundamental particles that include the electron (\textit{e}), muon (\textit{$\mu$}), and the tau lepton ($\tau$).  
+%\item \textbf{Quarks}: Fundamental particles that combine via strong interaction to form composite particles.
+%\item \textbf{Bosons}: Bosons are particles with an integer spin quantum number (0,1,2,..); they obey Bose-Einstein statistics, which allow multiple particles to occupy the same quantum state. They can be fundamental or composite particles. Fundamental bosons include the photon ($\gamma$), which carries the electromagnetic force; \gls{W} and \gls{Z} bosons, which carry the weak force; and gluons, which carry the strong force. The SM predicts the existence of another fundamental boson, the Higgs boson (\gls{H}) which permeates a field through which other particles acquire mass. 
+%
+%\end{enumerate}
+%
+%Electrons ($e$), muons ($\mu$) and the tau lepton ($\tau$) are the three leptons from the standard model. They are \textit{elementary}\footnote{An elementary particle is a particle whose substructure is unknown.} particles. Neutrinos are elementary particles that belong to the lepton family but with a mass that is minuscule compared to other leptons. Neutrinos produced in the decay escape detection completely.
+%
+%\textit{Hadrons} are composite particles made up of quarks and/or antiquarks that are held together by gluons. The proton is a hadron. When two protons collide, they create a spray of hadrons. \textit{Jets} can be thought of as an ensemble of hadrons that are created when quarks and gluons try to escape in energetic proton-proton collisions. Jets are pseudo particles rather than real particles, they appear in the final state as collimated energy deposits with charged tracks \cite{rm}. 
+%
+%Properties of electrons and muons that appear in the final state are measured directly in the detector. Taus, on the other hand decay immediately after their creation into either, an electron and two electron neutrinos, a muon and two muon neutrinos or a bunch of hadrons (called the hadronic tau) and one tau neutrino. 
+%
+%A short description of composite particles in the SM is in Appendix \ref{appendix:funp}.
+
+
+%We can deduce the following from the raw feature distributions:
+%
+%\begin{enumerate}
+%\item The signal and background values are coalesced or overlapping in every feature.
+%\item The derived mass features for signals have a distinctive peak at roughly 110-135 GeV (the Higgs mass) while the background mass peaks at a lower value is not so distinctive, this is probably attributed to the three sources of background production and the abundant $Z$ production which has a mass of 91 GeV.  
+%\item The presence of outliers gives most features a right skew, the ones with positive values are log-normalized as a preprocessing step to give a more balanced distribution shape. 
+%\end{enumerate}
+%
+%Fig. \ref{logfeatures1} and \ref{logfeatures2} depict the log transformed feature distributions.  
+%
+%\begin{figure}[H]
+%\includegraphics[width=\textwidth]{images/der_features_log_normal1.png}
+%\caption{Log normalized feature distributions of signal (red) and background (blue) events.}
+%\label{logfeatures1}
+%\end{figure}
+%
+%\begin{figure}[H]
+%\includegraphics[width=\textwidth]{images/der_features_log_normal2.png}
+%\caption{Log normalized feature distributions of signal (red) and background (blue) events.}
+%\label{logfeatures2}
+%\end{figure}
+%
+%The reference document \cite{rm} provided formulas for quantities that could add to the discriminatory power of a classifier. The invariant mass of two particles $\mathbf{a}$ and $\mathbf{b}$ can be computed from their raw momentum vectors, $p_{a} = (a_{x},a_{y},a_{z})$ and $p_{b} = (b_{x},b_{y},b_{z})$ as,
+%
+%\begin{equation}
+%m_{inv}(\mathbf{a},\mathbf{b}) = \sqrt{\left( \sqrt{a_{x}^2 + a_{y}^2 + a_{z}^2} + \sqrt{b_{x}^2 + b_{y}^2 + b_{z}^2} \right)^{2} - (a_{x}+b_{x})^{2} - (a_{y}+b_{y})^{2} - (a_{z}+b_{z})^{2}}
+%\end{equation}
+%
+%The transverse mass of two particles $\mathbf{a}$ and $\mathbf{b}$ can be computed setting the momentum in the $z$ direction to zero.
+%
+%\begin{equation}
+%m_{tr}(\mathbf{a},\mathbf{b}) = \sqrt{\left( \sqrt{a_{x}^2 + a_{y}^2} + \sqrt{b_{x}^2 + b_{y}^2} \right)^{2} - (a_{x}+b_{x})^{2} - (a_{y}+b_{y})^{2}}
+%\end{equation}
+%
+%The set of derived features were enriched with 5 additional mass based features based on these formulas. They were, 
+%
+%\begin{enumerate}
+%\item DER$\_$mass$\_$invariant$\_$tau$\_$lep: The invariant mass of the tau and the lepton $m_{inv}$(tau,lepton).
+%\item DER$\_$mass$\_$invariant$\_$tau$\_$jet1: The invariant mass of the tau and the leading jet $m_{inv}$(tau,jet1) if PRI$\_$jet$\_$num $>$ 0.
+%\item DER$\_$mass$\_$invariant$\_$tau$\_$jet2: The invariant mass of the tau and the subleading jet $m_{inv}$(tau,jet2) if PRI$\_$jet$\_$num $>$ 1.
+%\item DER$\_$mass$\_$transverse$\_$tau$\_$jet1 : The transverse mass of the tau and the leading jet $m_{tr}$(tau,jet1) if PRI$\_$jet$\_$num $>$ 0.
+%\item DER$\_$mass$\_$transverse$\_$tau$\_$jet1 : The transverse mass of the tau and the leading jet $m_{tr}$(tau,jet1) if PRI$\_$jet$\_$num $>$ 0.
+%\end{enumerate}
+%
+%Their distributions were included in the fig. \ref{unscaled_features2} and fig. \ref{logfeatures2}. 
+%
+%From fundamental physics, we know that all distributions should be invariant with respect to a rotation around the $z$ axis (beam). It was suggested by physicists to manipulate all the $\phi$ features so that tau has a $\phi$ (azhimuth angle) = 0 by subtracting PRI$\_$tau$\_$phi from all $\phi$ variables and dropping the feature PRI$\_$tau$\_$phi. The $\phi$ angles are all expressed in radians and normalized to be in the $[-\pi, +\pi]$ range \cite{melis}. 
+
+\begin{figure}
+\includegraphics[scale=0.4]{images/radian_dist.png}
+\caption{Radian features based on azhimuth angle $\phi$}
+\label{radians}
+\end{figure}
+
+The following four features were added (see \ref{radians}):
+
+\begin{itemize}
+\item PRI$\_$radian1 = $min(\phi_{tau} - \phi_{lep},\phi_{tau} - \phi_{met},\phi_{lep} - \phi_{met})$
+\item PRI$\_$radian2 = $min(\phi_{tau} - \phi_{met},\phi_{lep} - \phi_{met})$
+\item PRI$\_$radian3 = $min(\phi_{tau} - \phi_{lep},\phi_{tau} - \phi_{met})$
+\item PRI$\_$radian4 = $\phi_{lep} - \phi_{met}$
+\end{itemize}
+
+%\section{Support Vector Machines (SVM)}
+%
+%Support vector machines are a powerful tool for binary classification, however, there are relatively few published accounts of successful application of SVMs for particle identification in HEP. \cite{posvm} highlights that hyper-parameter tuning is an efficient way to prepare an SVM for the task of classification for particle identification. Rather than using the standard approach of a hyper-parameter grid search, the author recommends an automated significance based optimization of the SVM parameters. The implementation uses a C++ LIBSVM interface called SVM-HINT.   
+%
+%\cite{ansel} provides a good account of the factors that govern SVM usage in HEP problems. The results in the paper suggest that it is usually hard for an out of the box SVM to beat NN performance. In the presence of noisy data and overlapping classes, NNs usually perform better than SVMs since the number of support vectors is usually high making SVMs hard to scale. The advantage that SVMs have over other methods is that they are theoretically well understood and the kernel trick allows SVMs to have infinitely flexible decision boundaries. 
+%
+%\cite{anthony} uses SVMs in the analysis of top quark production and shows that a kernel SVM can quickly reproduce the best performance of a \textit{cut-based} approach. Cut-based approaches refer to the detection of signal rich selection regions in the data by applying univariate cuts on each feature (much like decision trees) and aggregating the data. The choice of the cut is usually heuristic.
+%
+%SVMs are powerful classifiers for smaller data-sets ($<$ 50K) with higher dimensions but might not scale to larger datasets unless a pre-processing step is applied to prune the data.
+
+\section{Composite Particles}
+%\settocdepth{section}
+\label{appendix:funp}
+This section is based on \cite{LHC}. It enumerates composite particles in the SM.
+
+\begin{enumerate}
+
+\item \textbf{Hadrons}: Composite particles made up of quarks and/or antiquarks that are held together by gluons, the carriers of the strong force. 
+
+\item \textbf{Mesons}: Composite particles made up of a quark and an antiquark. All mesons are hadrons. Mesons are short-lived and decay quickly after they are formed. 
+
+\item \textbf{Baryons}: Composite particles made up of three quarks or three antiquarks. All baryons are hadrons. Protons and neutrons are baryons.   
+
+\end{enumerate}
+
+%\section{Features}
+%\label{Pfeatures}
+
+%The features prefixed with \textbf{PRI} are 'raw' quantities as measured by the detector, essentially the momenta of the particles. The ones pre-fixed with \textbf{DER} are quantities computed from the primitive features.
+%
+%\begin{itemize}
+%\item Primary Features
+%
+%\begin{enumerate}[noitemsep]
+%\item{\textbf{PRI$\_$tau$\_$pt} The transverse momentum $\sqrt{p_{x}^2 + p_{y}^2}$ of the hadronic tau.}
+%\item{\textbf{PRI$\_$tau$\_$eta} The pseudorapidity $\eta$ of the hadronic tau.}
+%\item{\textbf{PRI$\_$tau$\_$phi} The azhimuth angle of the hadronic tau.}
+%\item{\textbf{PRI$\_$lep$\_$pt} The transverse momentum $\sqrt{p_{x}^2 + p_{y}^2}$ of the lepton (the type of lepton whether electron or muon is not known).}
+%\item{\textbf{PRI$\_$lep$\_$eta} The pseudorapidity $\eta$ of the lepton.}
+%\item{\textbf{PRI$\_$lep$\_$phi} The azhimuth angle $\phi$ of the lepton.}
+%\item{\textbf{PRI$\_$met} The missing transverse momentum $E_{miss}^{T}$.}
+%\item{\textbf{PRI$\_$met$\_$sumet} The total transverse energy in the detector.}
+%\item{\textbf{PRI$\_$met$\_$phi} The azhimuth angle $\phi$ of the missing transverse energy.}
+%\item{\textbf{PRI$\_$jet$\_$num} The number of jets, either 0, 1, 2 or 3.}
+%\item{\textbf{PRI$\_$jet$\_$leading$\_$pt} The transverse momentum $\sqrt{p_{x}^2 + p_{y}^2}$ of the leading jet.}
+%\item{\textbf{PRI$\_$jet$\_$leading$\_$eta} The pseudorapidity $\eta$ of the leading jet.}
+%\item{\textbf{PRI$\_$jet$\_$leading$\_$phi} The azhimuth angle $\phi$ of the leading jet.}
+%\item{\textbf{PRI$\_$jet$\_$subleading$\_$pt} The transverse momentum $\sqrt{p_{x}^2 + p_{y}^2}$ of the sub-leading jet.}
+%\item{\textbf{PRI$\_$jet$\_$subleading$\_$eta} The pseudorapidity $\eta$ of the sub-leading jet.}
+%\item{\textbf{PRI$\_$jet$\_$subleading$\_$phi} The azhimuth angle $\phi$ of the sub-leading jet.}
+%\item{\textbf{PRI$\_$jet$\_$all$\_$pt} The scalar sum of the transverse momentum of all the jets of the events.}
+%\end{enumerate}
+%
+%\item Derived Features
+%
+%All of the derived features except for DER$\_$mass$\_$MMC are algebraically derived from the above listed primary features. These quantities were defined by ATLAS physicists in the reference document \cite{rm} to use as additional features in the analysis of the Higgs to tau-tau decay. 
+%
+%\begin{enumerate}
+%
+%\item{\textbf{DER$\_$mass$\_$MMC}} The estimated mass of the Higgs boson candidate.
+%\item{\textbf{DER$\_$mass$\_$transverse$\_$met$\_$lep}} The transverse mass between the missing transverse energy and the lepton.
+%\item{\textbf{DER$\_$mass$\_$vis}} The invariant mass of the hadronic tau and the lepton.
+%\item{\textbf{DER$\_$pt$\_$h}} The modulus of the vector sum of the transverse momentum of the hadronic tau, the lepton, and the missing transverse energy vector. 
+%\item{\textbf{DER$\_$deltaeta$\_$jet$\_$jet}}
+%\item{\textbf{DER$\_$mass$\_$jet$\_$jet}}
+%\item{\textbf{DER$\_$prodeta$\_$jet$\_$jet}} The product of the pseudorapidities of the two jets. 
+%\item{\textbf{DER$\_$deltar$\_$tau$\_$lep}} The R separation between the hadronic tau and the lepton where the R separation between two particles A and B is defined as, 
+%\begin{equation*}
+%\sqrt{(\eta_{A} - \eta_{B})^2 + (\phi_{A} - \phi_{B})^2} 
+%\end{equation*}
+%\item{\textbf{DER$\_$pt$\_$tot}} The modulus of the vector sum of the missing transverse momenta and the transverse momenta of the hadronic tau, the lepton and the jets. 
+%\item{\textbf{DER$\_$sum$\_$pt}} The sum of the moduli of the transverse momenta of the hadronic tau, the lepton and the jets. 
+%\item{\textbf{DER$\_$pt$\_$ratio$\_$lep$\_$tau}} The ratio of the transverse momenta of the lepton and the hadronic tau. 
+%\item{\textbf{DER$\_$met$\_$phi$\_$centrality}} The centrality of the azhimuth angle of the missing transverse energy vector w.r.t the hadronic tau and the lepton, it is defined as, 
+%\begin{equation*}
+%C = \frac{A + B}{\sqrt{A^2 +B^2}}
+%\end{equation*}
+%where $A = \sin(\phi_{met}-\phi_{lep})*\sign(\sin(\phi_{had}-\phi_{lep}))$, $B = \sin(\phi_{had}-\phi_{met})*\sign(\sin(\phi_{had}-\phi_{lep}))$, and $\phi_{lep}$, $\phi_{met}$ and $\phi_{had}$ are the azhimuth angles of the missing transverse energy vector, the lepton, the hadronic tau, respectively. 
+%
+%\item{\textbf{DER$\_$lep$\_$eta$\_$centrality}} The centrality of the pseudorapidity of the lepton w.r.t the two jets (undefined if PRI$\_$jet$\_$num $\leq$ 1), it is defined as, 
+%\begin{equation*}
+%\exp\bigg[ \frac{-4}{(\eta_{1} - \eta_{2})^2} \bigg(\eta_{lep} - \frac{\eta_{1} + \eta_{2}}{2} \bigg)^2 \bigg] 
+%\end{equation*}
+%
+%where $\eta_{lep}$ is the pseudorapidity of the lepton and $\eta_{1}$ and $\eta_{2}$ are the pseudorapidities of the two jets. 
+
+%\end{enumerate}
+%\end{itemize}
+
+%The next section \ref{statams} shows the derivation of the form in eq. \ref{ams} in the context of $\pvalue$s.
+%
+%\section{Statistical Derivation of the AMS}
+%\label{statams}
+%
+%For a classifier $h$ with a selection region $\mathcal{H} = \{\mathbf{x}: h(\mathbf{x}) = s\}$, the number of events $n = |\mathcal{H}|$ in the selection region of a classifier follows a Poisson distribution as its mean can be expressed by the sum of two Poisson random variables $\mu_b + \mu_s$, where $\mu_b$  is the expected number of background events in the selection region and $\mu_s$ is the expected number of signal events in the selection region. 
+%
+%A Poisson probability for $n$ events with an average rate of occurrence of $\mu_{b} + \mu_{s}$ is given by,
+%
+%\begin{equation}
+%P(n \vert \mu_{b},\mu_{s}) = \frac{(\mu_{b} + \mu_{s})^{n}}{n!}e^{-(\mu_{b} + \mu_{s})}
+%\end{equation}
+
+
+
+%Fig.\ref{gini} shows the behaviour of the error metric from the viewpoint of optimizing a single decision tree. A single decision tree prefers higher depth and higher number of features to consider at each node, this also shows why they are easily over fit. The pruning parameter indicates the minimum number of events needed in a node to qualify for splitting and the minimum number of events needed to qualify as a leaf. Values higher than 100 deteriorate performance on this dataset. Higher pruning parameters lead to shorter trees, which are more stable but they lack the interaction depth to model relationships in high dimensional data. Optimizing a single tree is fundamentally different to optimizing the parameters of a tree ensemble which uses multiple single trees. In the tree ensemble density plots \ref{depth_features} and \ref{tree_num_features}, the error deteriorates with depth after a convergence point is reached, which in this case (an ensemble of 10 trees) happens to be at a depth of around 12.  
+
+%%\begin{figure}[h]
+%\includegraphics[width=\textwidth]{images/Grid_error_gini_entropy.png}
+%\caption{Density of the balanced classification error for different pruning parameters which refer to the minimum number of leaves required to split a node and the minimum number of leaves required to qualify as a leaf.}
+%\label{gini}
+%\end{figure}
+%
+%The null hypothesis we are testing for is $H_{0}: \mu_{s} = 0$ and the alternative hypothesis is $H_{1}: \mu_{s} > 0$. We compute the likelihood ratio defined as, 
+%
+%\begin{equation}
+%\Lambda = \frac{P(n \vert 0,\mu_{b})}{P(n \vert \mu_{s},\mu_{b})} = \Big( \frac{\mu_{b}}{\mu_{s} + \mu_{b}}\Big)^{n}e^{\mu_s} = \Big( \frac{\mu_{b}}{n}\Big)^{n}e^{n - \mu_{b}}
+%\end{equation}
+%
+%where $\mu_s = n - \mu_b$ is the maximum likelihood estimator for $\mu_s$. Next, we need the sampling distribution of the test statistic $\Lambda$ to derive a $\pvalue$. 
+%
+%By Wilk's theorem the test statistic $-2\ln(\Lambda)$ follows a $\chi^{2}$ distribution in the large sample limit as $n \rightarrow \infty$. This means that we can compute likelihood $\Lambda$ and use the statistic $-2\ln(\Lambda)$ under a $\chi^{2}$ cumulative distribution function to compute the $\pvalue$. 
+%
+%\begin{equation}
+%p = 1 - Q(-2\ln(\Lambda))
+%\end{equation}
+%
+%Q is the $\chi{2}$ cumulative distribution function.
+%
+%The test statistic, 
+%
+%\begin{equation}
+%q_{0} = \begin{cases} -2\ln(\Lambda),  \textrm{   }n > \mu_{b}\\ 0,  \hspace{11mm} \textrm{otherwise }
+%\end{cases}
+%\end{equation}
+%
+%serves as the basis of the statistical test. In order to see why, a significant upward fluctuation in the data constitutes evidence that a background only hypothesis ($\mu_s = 0$) is not supported in the data. Thus, higher values of the test statistic - $q_{0}$ point to increasing evidence of incompatibility with the null hypothesis. If the data fluctuates downward such that one finds events fewer than that expected by the background process then this also points to incompatibility with the null but not because of presence of signal events but rather some other systematic error hence in this case we assign $q_{0} = 0$.
+%
+%\begin{figure}
+%\includegraphics[scale=0.6]{images/lambda.png}
+%\end{figure}
+%
+%\begin{figure}
+%\includegraphics[scale=0.6]{images/wilks.png}
+%\end{figure}
+%
+%Next, we need to define the pdf (probability density function) of $q_{0}$. Note that $q_{0}$ when $n > \mu_{b}$ follows a $\chi^{2}$ distribution in the large sample limit. The pdf of a $\chi^{2}$ distribution is, 
+%
+%\begin{equation}
+%\dfrac{1}{2^{\frac{k}{2}}\Gamma(\frac{k}{2})}x^{\frac{k}{2} - 1}e^{-\frac{x}{2}}
+%\end{equation}
+%
+%where $k$ is the degrees of freedom (since a $\chi^{2}$ random variable is the sum of $k$ independent standard normal variables. If $Z_{1},...,Z_{k}$ are standard normal then, $Q = \sum_{i=1}^{k}Z_{i}^{2}$ is $\chi^{2}$ distributed with $k$ degrees of freedom) and $\Gamma$ is the gamma function, $\Gamma(n) = (n-1)!$
+%
+%Using the pdf of the $\chi^{2}$ distribution and the fact that $k = 1$ for $q_{0}$ and $\Gamma\bigg(\dfrac{1}{2}\bigg) = \sqrt{\pi}$ we deduce that the pdf of $q_{0}$ is,
+%
+%\begin{equation}
+%f(q_{0}) = \frac{1}{2}\delta(q_{0}) + \frac{1}{2}\frac{1}{\sqrt{2\pi}}\frac{1}{\sqrt{q_{0}}}e^{-\frac{q_{0}}{2}}
+%\end{equation}
+%
+%where $\delta$ is the Dirac delta function and we use the result that when a random variable takes $n$ discrete values $x_{1},...,x_{n}$ with associated probabilities $p_{1},...,p_{n}$ the probability density function is,
+%
+%\begin{equation}
+%f(t) = \sum_{i=1}^{n}p_{i}\delta(t-x_{i})
+%\end{equation}
+%
+%The cumulative distribution function of $q_{0}$ is,
+%
+%\begin{equation}
+%F(q_{0}) = \Phi(\sqrt{q_{0}})
+%\label{cum}
+%\end{equation}
+%where $\Phi$ is the cumulative distribution function (cdf) of the standard normal variable. 
+%
+%To derive this from first principles consider the expression of the cdf of the random variable $q_{0}$ as defined above,
+%
+%\begin{equation*}
+%\begin{aligned}
+%F_{q_{0}}(x) &= \int_{-\infty}^{x}f_{q_{0}}(t)dt\\
+%& = \frac{1}{2}\int_{-\infty}^{x} \delta(t)dt + \frac{1}{2}\frac{1}{\sqrt{2\pi}}\int_{-\infty}^{x}\frac{1}{\sqrt{t}}e^{-t/2}dt\\
+%&= \frac{1}{2}\bigg[1 + \textrm{erf}\bigg(\sqrt{\frac{x}{2}}\bigg) \bigg] \\
+%&= \Phi(\sqrt{x})
+%\end{aligned}
+%\end{equation*}
+%where erf($\bullet$) is the gaussian error function defined as,
+%
+%\begin{equation*}
+%\textrm{erf}(x) = \frac{1}{\sqrt{\pi}}\int_{-x}^{x}e^{-t^{2}} dt
+%\end{equation*}
+%
+%This is closely related to the standard normal cumulative distribution function through, 
+%
+%\begin{equation*}
+%\Phi(x) = \frac{1}{2}\bigg[1 + \textrm{erf}\bigg(\frac{x}{\sqrt{2}}\bigg)\bigg]
+%\end{equation*} 
+%and
+%
+%\begin{equation*}
+%\Phi(x) = \int_{-\infty}^{x}e^{-t^{2}/2}dt
+%\end{equation*}
+%
+%The $\pvalue$ and significance is from eq. \ref{cum} is therefore,
+%
+%\begin{equation*}
+%p = 1 - \Phi(\sqrt{q_{0}}) 
+%\end{equation*}
+%
+%\begin{equation*}
+%Z = \Phi^{-1}(1-p)
+%\end{equation*}
+%
+%This leads to the result,
+%
+%\begin{equation}
+%Z = \sqrt{q_{0}} = \sqrt{2\Bigg( n\ln\bigg(\frac{n}{\mu_{b}}\bigg) - n + \mu_{b}\Bigg)} 
+%\end{equation}
+%
+%if $n > \mu_b$ and Z = 0 otherwise. The quantity Z measures significance in terms of units of sigmas from the mean, a Z value of 5 would correspond to a 5$\sigma$ effect and in physics is regarded as necessary to claim a discovery of a new particle.
+
+
+

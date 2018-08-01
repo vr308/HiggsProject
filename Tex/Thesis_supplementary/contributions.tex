@@ -1,0 +1,24 @@
+
+\begin{enumerate}
+
+\item This thesis proposes a meta-learning algorithm that works on the principles of boosting, bagging and bifurcation. Real data is ambiguous and imbalanced in its class distributions. Class overlap and class imbalance weaken classifier performance since the datasets are not only non-separable but have few examples of the minority class to learn from. The traditional approach in dealing with overlapping classes has been to build powerful classifiers that combine the classification power of hundreds of simpler models - the ensemble idea. MetaB draws on the power of ensembles but provides an additional dimension to learning by considering the spatial distribution of points in the feature space to construct more effective bootstrap samples. This harnesses the joint power of rule based and distance based learning.   
+
+\item This thesis provides a systematic study of the classification problem presented in the ATLAS Higgs dataset from the perspective of a machine learner. By providing a model which achieves a competitive AMS score it sets an effective performance threshold achievable by using the basic tree learner in an innovative re-incarnation. It also provides a threshold against which more sophisticated models can be rated and compared. This is in keeping with the Occam's razor approach which states simpler models should be preferred over more complex ones if their performances are similar. In conducting this study it has come to light that some of the solutions proposed for achieving high scores on this dataset were powerful but superfluous \citep{melis}. Similar scores are achievable using much simpler architectures, one such has been described in this thesis. 
+
+\item The challenge presented in physics problems of the $H \rightarrow \tau^{+}\tau^{-}$ nature render the current standards of performance assessment mute. Chapter \ref{performance} provides a descriptive account of how the AMS ($\sigma$) differs from the performance assessment metrics in the context of learning and de-emphasizes the notion of higher accuracy $\rightarrow$ better model. 
+
+\end{enumerate}
+
+\section{Related / Future Work}
+
+The future aims of research could take the following forms:
+
+\begin{itemize}
+\item The work in this thesis provides an innovative way to use a primitive learner like a tree for classification in an extremely challenging setting. The work does not explore changing the way a primitive binary tree learns. One of the fundamental building blocks of tree learning is the splitting criterion, and majority of the studies that focus on applications of tree learning use axis-parallel linear splits .i.e they split on a single feature at each node. Geometrically, these univariate splits at each node can be thought of generating space partitioning hyperplanes parallel to the feature axis. Splitting criterion that generate oblique splits by using a linear combination of attribute values, could perform very differently to the primitive tree with linear splits. They generate polygonal partitions in feature space instead of rectangular ones.  There is very little research on such trees and hardly any software packages offer implement construction of such trees \citep{oblique}. 
+\item Bagging and boosting can be combined in various ways, the approach in this thesis using trees is one example, and is in no way the final word on the topic \citep{combining, combining2}.
+\item Deriving theoretical performance bounds on learning from primitive learners like binary trees. As we have seen, additional classification power can be extracted from trees by using enough of them and re-combining them. How far they can be stretched in the context of a specific problem is established through experimentation, but can we do better than trial and error? 
+
+\item Developing a unified meta-learning system which switches between peripheral learning and core learning in stages. Peripheral learning learns information that is used to improve performance in the core learning task. 
+\item Providing a prescriptive framework that is targeted to problems with class overlap. Real data is ridden with overlap and ambiguity, there is currently no consensus on the most effective methods that perform well on such datasets \citep{trappenberg,fuzzy}.
+\end{itemize}
+ 
